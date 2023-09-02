@@ -8,6 +8,7 @@ export interface HotKeyInfo {
   onKeyPressed: () => void;
   pause: () => void;
   unpause: () => void;
+  removeListener: () => void;
 }
 
 export interface HotKeyOptions {
@@ -37,7 +38,7 @@ export const useHotKey = (
 
     return keyCombination;
   });
-  useEventListener(target, 'keydown', (event) => {
+  const removeListener = useEventListener(target, 'keydown', (event) => {
     const options = opts || {};
     if (paused) {
       return;
@@ -62,6 +63,7 @@ export const useHotKey = (
     hotKey: hotKey.value,
     directions: opts?.directions,
     onKeyPressed,
+    removeListener,
     pause: () => (paused = true),
     unpause: () => (paused = false),
   };
