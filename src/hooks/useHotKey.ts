@@ -6,6 +6,8 @@ export interface HotKeyInfo {
   hotKey: (string | string[])[];
   directions?: string;
   onKeyPressed: () => void;
+  pause: () => void;
+  unpause: () => void;
 }
 
 export interface HotKeyOptions {
@@ -23,6 +25,8 @@ export const useHotKey = (
 ): HotKeyInfo => {
   const target = opts?.target ?? window;
   const isMacOS = navigator.userAgent.toLowerCase().includes('mac');
+  let paused: boolean = false;
+
   const hotKey = computed(() => {
     const options = opts || {};
     const keyCombination = [];
@@ -35,8 +39,11 @@ export const useHotKey = (
   });
   useEventListener(target, 'keydown', (event) => {
     const options = opts || {};
+    if (paused) {
+      return;
+    }
     key = typeof key === 'string' ? [key] : key;
-    if (key.includes(event.key) && matchKeyScheme(options, event)) {
+    if (key.includes(event.key.toLowerCase()) && matchKeyScheme(options, event)) {
       event.preventDefault();
       const result = onKeyPressed();
       if (typeof result !== 'function') {
@@ -55,6 +62,8 @@ export const useHotKey = (
     hotKey: hotKey.value,
     directions: opts?.directions,
     onKeyPressed,
+    pause: () => (paused = true),
+    unpause: () => (paused = false),
   };
 };
 
