@@ -6,244 +6,25 @@
 
 #### 无编辑效果
 
-```vue
-<section>
-  <h1>无编辑效果</h1>
-  <EditTable class="edit-table" :data-source="tableData">
-    <EditTableColumn prop="date" label="时间"> </EditTableColumn>
-    <EditTableColumn prop="name" label="姓名"> </EditTableColumn>
-    <EditTableColumn prop="address" label="地址"> </EditTableColumn>
-  </EditTable>
-</section>
-```
-
-
-
 ![无编辑效果](https://cdn.staticaly.com/gh/JessYan0913/picx-images-hosting@master/Snipaste_2023-09-02_11-21-52.3r5pp82rg660.webp)
 
 #### 可编辑效果
-
-```vue
-<section>
-  <h1>可编辑效果</h1>
-  <EditTable class="edit-table" :data-source="tableData">
-    <EditTableColumn prop="date" label="时间">
-      <template #edit="{ row }">
-        <input v-model="row.date" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn prop="name" label="姓名">
-      <template #edit="{ row }">
-        <input v-model="row.name" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn prop="address" label="地址">
-      <template #edit="{ row }">
-        <input v-model="row.address" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn label="修改">
-      <template #default="{ actions, $index }">
-        <el-button @click="actions.startEditable($index)">修改</el-button>
-      </template>
-      <template #edit="{ actions, $index }">
-        <el-button @click="actions.saveEditable($index)">保存</el-button>
-        <el-button @click="actions.cancelEditable($index)">取消</el-button>
-      </template>
-    </EditTableColumn>
-  </EditTable>
-</section>
-```
-
-
 
 ![可编辑效果](https://cdn.staticaly.com/gh/JessYan0913/picx-images-hosting@master/Kapture-2023-09-02-at-11.30.59.2nhe801q0e60.gif)
 
 #### 删除效果
 
-```vue
-<section>
-  <h1>删除效果</h1>
-  <EditTable class="edit-table" :data-source="tableData">
-    <EditTableColumn prop="date" label="时间">
-      <template #edit="{ row }">
-        <input v-model="row.date" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn prop="name" label="姓名">
-      <template #edit="{ row }">
-        <input v-model="row.name" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn prop="address" label="地址">
-      <template #edit="{ row }">
-        <input v-model="row.address" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn label="修改">
-      <template #default="{ actions, $index }">
-        <el-button @click="actions.startEditable($index)">修改</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-      <template #edit="{ actions, $index }">
-        <el-button @click="actions.saveEditable($index)">保存</el-button>
-        <el-button @click="actions.cancelEditable($index)">取消</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-    </EditTableColumn>
-  </EditTable>
-</section>
-```
-
-
-
 ![删除效果](https://cdn.staticaly.com/gh/JessYan0913/picx-images-hosting@master/Kapture-2023-09-02-at-11.33.51.oj8lh5vmwqo.gif)
 
 #### 新增效果
-
-```vue
-<section>
-  <h1>新增效果</h1>
-  <EditTable ref="addEditTableRef" class="edit-table" :data-source="tableData">
-    <EditTableColumn prop="date" label="时间">
-      <template #edit="{ row }">
-        <input v-model="row.date" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn prop="name" label="姓名">
-      <template #edit="{ row }">
-        <input v-model="row.name" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn prop="address" label="地址">
-      <template #edit="{ row }">
-        <input v-model="row.address" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn label="修改">
-      <template #default="{ actions, $index }">
-        <el-button @click="actions.startEditable($index)">修改</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-      <template #edit="{ actions, $index }">
-        <el-button @click="actions.saveEditable($index)">保存</el-button>
-        <el-button @click="actions.cancelEditable($index)">取消</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-    </EditTableColumn>
-  </EditTable>
-  <el-button @click="addEditTableRef?.editActions.addRow()">新增</el-button>
-</section>
-```
-
-
 
 ![新增效果](https://cdn.staticaly.com/gh/JessYan0913/picx-images-hosting@master/Kapture-2023-09-02-at-11.37.56.5ile0v6cw2s0.gif)
 
 #### 表单校验效果
 
-```vue
-<section>
-  <h1>表单校验效果</h1>
-  <EditTable ref="formEditTableRef" class="edit-table" :data-source="tableData">
-    <EditTableColumn
-      prop="date"
-      label="时间"
-      :rules="[{ required: true, message: '时间是必填项', trigger: 'blur' }]"
-    >
-      <template #edit="{ row }">
-        <input v-model="row.date" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn
-      prop="name"
-      label="姓名"
-      :rules="[{ required: true, message: '姓名是必填项', trigger: 'blur' }]"
-    >
-      <template #edit="{ row }">
-        <input v-model="row.name" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn
-      prop="address"
-      label="地址"
-      :rules="[{ required: true, message: '地址是必填项', trigger: 'blur' }]"
-    >
-      <template #edit="{ row }">
-        <input v-model="row.address" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn label="修改">
-      <template #default="{ actions, $index }">
-        <el-button @click="actions.startEditable($index)">修改</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-      <template #edit="{ actions, $index }">
-        <el-button @click="actions.saveEditable($index)">保存</el-button>
-        <el-button @click="actions.cancelEditable($index)">取消</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-    </EditTableColumn>
-  </EditTable>
-  <el-button @click="formEditTableRef?.editActions.addRow()">新增</el-button>
-</section>
-```
-
-
-
 ![表单校验效果](https://cdn.staticaly.com/gh/JessYan0913/picx-images-hosting@master/Kapture-2023-09-02-at-11.39.47.5qsl1p1kbo80.gif)
 
 #### 获取编辑结果
-
-```vue
-<section>
-  <h1>获取编辑结果</h1>
-  <EditTable ref="resultEditTableRef" class="edit-table" :data-source="tableData">
-    <EditTableColumn
-      prop="date"
-      label="时间"
-      :rules="[{ required: true, message: '时间是必填项', trigger: 'blur' }]"
-    >
-      <template #edit="{ row }">
-        <input v-model="row.date" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn
-      prop="name"
-      label="姓名"
-      :rules="[{ required: true, message: '姓名是必填项', trigger: 'blur' }]"
-    >
-      <template #edit="{ row }">
-        <input v-model="row.name" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn
-      prop="address"
-      label="地址"
-      :rules="[{ required: true, message: '地址是必填项', trigger: 'blur' }]"
-    >
-      <template #edit="{ row }">
-        <input v-model="row.address" />
-      </template>
-    </EditTableColumn>
-    <EditTableColumn label="操作">
-      <template #default="{ actions, $index }">
-        <el-button @click="actions.startEditable($index)">操作</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-      <template #edit="{ actions, $index }">
-        <el-button @click="actions.saveEditable($index)">保存</el-button>
-        <el-button @click="actions.cancelEditable($index)">取消</el-button>
-        <el-button @click="actions.deleteRow($index)">删除</el-button>
-      </template>
-    </EditTableColumn>
-  </EditTable>
-  <el-button @click="resultEditTableRef?.editActions.addRow()">新增</el-button>
-  <div class="result-wrapper">获取数据:{{ resultEditTableRef?.resultData }}</div>
-</section>
-```
-
-
 
 ![获取编辑结果](https://cdn.staticaly.com/gh/JessYan0913/picx-images-hosting@master/Kapture-2023-09-02-at-11.42.26.6ugb99gesy80.gif)
 
@@ -272,8 +53,7 @@
 
 #### EditTableColumn 插槽
 
-| 插槽名  | 说明                   | 作用域                                                       |
-| ------- | ---------------------- | ------------------------------------------------------------ |
-| default | 自定义列的内容         | `{$index, row, column, actions}`，actions包括了`addRow, deleteRow, startEditable, saveEditable, cancelEditable` |
-| edit    | 编辑态的自定义列的内容 | 同上                                                         |
-
+| 插槽名  | 说明                   | 作用域                                                                                                           |
+| ------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| default | 自定义列的内容         | `{$index, row, column, actions}`，actions 包括了`addRow, deleteRow, startEditable, saveEditable, cancelEditable` |
+| edit    | 编辑态的自定义列的内容 | 同上                                                                                                             |
