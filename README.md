@@ -52,6 +52,8 @@
 
 ## Hooks
 
+### useHotkey
+
 ### useExport
 
 ### useSelectFile

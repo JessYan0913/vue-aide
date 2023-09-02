@@ -19,6 +19,11 @@ export const routes: RouteRecordRaw[] = [
     name: 'GridList',
     component: () => import('../views/grid-list/index.vue'),
   },
+  {
+    path: '/command-dialog',
+    name: 'CommandDialog',
+    component: () => import('../views/command-dialog/index.vue'),
+  },
 ];
 
 const router = createRouter({
