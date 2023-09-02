@@ -1,29 +1,29 @@
 <script lang="ts" setup>
-import { inject, Ref, watchEffect } from 'vue'
+import { inject, Ref, watchEffect } from 'vue';
 
-import { EditActions, FormModel, FormModelItem, FormProps } from './EditTable.vue'
+import { EditActions, FormModel, FormModelItem, FormProps } from './EditTable.vue';
 
 export interface Rule {}
 
 interface ColumnScope {
-  row?: any
-  column: any
-  $index: number
-  [key: string]: any
+  row?: any;
+  column: any;
+  $index: number;
+  [key: string]: any;
 }
 
 const props = withDefaults(
   defineProps<{
-    prop?: string
-    label?: string
-    width?: string
-    rules?: Rule[]
+    prop?: string;
+    label?: string;
+    width?: string;
+    rules?: Rule[];
   }>(),
   {
     prop: '',
     label: '',
   }
-)
+);
 
 const defaultEditActions: EditActions = {
   addRow: () => {},
@@ -31,19 +31,19 @@ const defaultEditActions: EditActions = {
   startEditable: () => {},
   cancelEditable: () => {},
   saveEditable: () => {},
-}
+};
 
-const editActions = inject<EditActions | undefined>('editActions')
+const editActions = inject<EditActions | undefined>('editActions');
 
-const formModel = inject<Ref<FormModel | undefined>>('formModel')
+const formModel = inject<Ref<FormModel | undefined>>('formModel');
 
-const formProps = inject<Ref<FormProps | undefined>>('formProps')
+const formProps = inject<Ref<FormProps | undefined>>('formProps');
 
 watchEffect(() => {
   if (props.prop) {
-    formProps?.value?.add(props.prop)
+    formProps?.value?.add(props.prop);
   }
-})
+});
 
 const getEditModel = (index: number): FormModelItem => {
   if (!formModel || !formModel.value?.model) {
@@ -52,18 +52,18 @@ const getEditModel = (index: number): FormModelItem => {
       isNew: false,
       formData: {},
       data: {},
-    }
+    };
   }
-  return formModel.value.model[index]
-}
+  return formModel.value.model[index];
+};
 
-const getEditRow = (index: number): any => getEditModel(index).formData
+const getEditRow = (index: number): any => getEditModel(index).formData;
 
-const isEditing = (index: number): boolean => getEditModel(index).isEditing ?? false
+const isEditing = (index: number): boolean => getEditModel(index).isEditing ?? false;
 
 const calculateColumnDefaultValue = (scope: ColumnScope) => {
-  return scope.row?.[props.prop]
-}
+  return scope.row?.[props.prop];
+};
 </script>
 
 <template>

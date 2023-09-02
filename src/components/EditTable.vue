@@ -1,64 +1,64 @@
 <script lang="ts" setup>
-import { computed, provide, Ref, ref, watchEffect } from 'vue'
+import { computed, provide, Ref, ref, watchEffect } from 'vue';
 
-export type RequestResult<T> = T[]
+export type RequestResult<T> = T[];
 
-export type RequestFunc<T> = () => Promise<RequestResult<T>> | RequestResult<T>
+export type RequestFunc<T> = () => Promise<RequestResult<T>> | RequestResult<T>;
 
 export interface EditTableProvide {}
 
 export interface EditActions {
-  addRow: (row?: Record<any, any>) => void
-  deleteRow: (index: number) => void
-  startEditable: (index: number) => void
-  cancelEditable: (index: number) => void
-  saveEditable: (index: number) => void
+  addRow: (row?: Record<any, any>) => void;
+  deleteRow: (index: number) => void;
+  startEditable: (index: number) => void;
+  cancelEditable: (index: number) => void;
+  saveEditable: (index: number) => void;
 }
 
 export interface FormModelItem {
-  isEditing: boolean
-  isNew: boolean
-  data: Record<string | number | symbol, any>
-  formData: Record<string | number | symbol, any>
+  isEditing: boolean;
+  isNew: boolean;
+  data: Record<string | number | symbol, any>;
+  formData: Record<string | number | symbol, any>;
 }
 
 export interface FormModel {
-  model: FormModelItem[]
+  model: FormModelItem[];
 }
 
-export type FormProps = Set<string>
+export type FormProps = Set<string>;
 
 const props = withDefaults(
   defineProps<{
-    dataSource?: any[]
-    request?: RequestFunc<any>
+    dataSource?: any[];
+    request?: RequestFunc<any>;
   }>(),
   {
     dataSource: () => [],
   }
-)
+);
 
 const formModel = ref<FormModel>({
   model: [],
-})
+});
 
-const form = ref()
+const form = ref();
 
-const formProps = ref<FormProps>(new Set())
+const formProps = ref<FormProps>(new Set());
 
-const tableData = computed(() => formModel.value.model.map(({ data }) => data))
+const tableData = computed(() => formModel.value.model.map(({ data }) => data));
 
 const resultData = computed(() => {
   return formModel.value.model.reduce((resultData: any[], model: FormModelItem) => {
     if (model.isNew) {
-      return resultData
+      return resultData;
     }
     resultData.push({
       ...model.data,
-    })
-    return resultData
-  }, [])
-})
+    });
+    return resultData;
+  }, []);
+});
 
 const convertFormModel = (data: any[]): FormModelItem[] =>
   data.map(
@@ -68,26 +68,26 @@ const convertFormModel = (data: any[]): FormModelItem[] =>
       isEditing: false,
       isNew: false,
     })
-  )
+  );
 
 watchEffect(async () => {
-  const model = [...props.dataSource]
+  const model = [...props.dataSource];
   if (typeof props.request === 'function') {
-    model.push(...(await Promise.resolve(props.request())))
+    model.push(...(await Promise.resolve(props.request())));
   }
-  formModel.value.model = convertFormModel(model)
-})
+  formModel.value.model = convertFormModel(model);
+});
 
 const generateValidateFields = (index: number) =>
-  Array.from(formProps.value).map((prop) => `model.${index}.formData.${prop}`)
+  Array.from(formProps.value).map((prop) => `model.${index}.formData.${prop}`);
 
 const startEditable = (index: number) => {
-  formModel.value.model[index].isEditing = true
-}
+  formModel.value.model[index].isEditing = true;
+};
 
 const deleteRow = (index: number) => {
-  formModel.value.model.splice(index, 1)
-}
+  formModel.value.model.splice(index, 1);
+};
 
 const addRow = (row: Record<any, any> = {}) => {
   formModel.value.model.push({
@@ -95,40 +95,40 @@ const addRow = (row: Record<any, any> = {}) => {
     formData: { ...row },
     isEditing: true,
     isNew: true,
-  })
-}
+  });
+};
 
 const cancelEditable = (index: number) => {
   if (!form.value) {
-    return
+    return;
   }
 
-  form.value.resetFields && form.value.resetFields(generateValidateFields(index))
-  const formModelItem = formModel.value.model[index]
-  formModelItem.formData = { ...formModelItem.data }
+  form.value.resetFields && form.value.resetFields(generateValidateFields(index));
+  const formModelItem = formModel.value.model[index];
+  formModelItem.formData = { ...formModelItem.data };
   if (formModelItem.isNew) {
-    formModel.value.model.splice(index, 1)
+    formModel.value.model.splice(index, 1);
   } else {
-    formModelItem.isEditing = false
+    formModelItem.isEditing = false;
   }
-}
+};
 
 const saveEditable = (index: number) => {
   if (!form.value) {
-    return
+    return;
   }
 
   form.value.validateField &&
     form.value.validateField(generateValidateFields(index), (validated: boolean) => {
       if (!validated) {
-        return
+        return;
       }
-      const formModelItem = formModel.value.model[index]
-      formModelItem.data = { ...formModelItem.formData }
-      formModelItem.isEditing = false
-      formModelItem.isNew = false
-    })
-}
+      const formModelItem = formModel.value.model[index];
+      formModelItem.data = { ...formModelItem.formData };
+      formModelItem.isEditing = false;
+      formModelItem.isNew = false;
+    });
+};
 
 const editActions: EditActions = {
   addRow,
@@ -136,18 +136,18 @@ const editActions: EditActions = {
   startEditable,
   cancelEditable,
   saveEditable,
-}
+};
 
-provide<Ref<FormModel>>('formModel', formModel)
+provide<Ref<FormModel>>('formModel', formModel);
 
-provide<Ref<FormProps>>('formProps', formProps)
+provide<Ref<FormProps>>('formProps', formProps);
 
-provide<EditActions>('editActions', editActions)
+provide<EditActions>('editActions', editActions);
 
 defineExpose({
   resultData,
   editActions,
-})
+});
 </script>
 
 <template>

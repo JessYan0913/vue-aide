@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-import EditTable from './components/EditTable.vue'
-import EditTableColumn from './components/EditTableColumn.vue'
+import EditTable from './components/EditTable.vue';
+import EditTableColumn from './components/EditTableColumn.vue';
 
 const tableData = [
   {
@@ -25,13 +25,13 @@ const tableData = [
     name: 'Tom',
     address: 'No. 189, Grove St, Los Angeles',
   },
-]
+];
 
-const loadData = async () => tableData
+const loadData = async () => tableData;
 
-const addEditTableRef = ref()
-const formEditTableRef = ref()
-const resultEditTableRef = ref()
+const addEditTableRef = ref();
+const formEditTableRef = ref();
+const resultEditTableRef = ref();
 </script>
 
 <template>
