@@ -34,7 +34,7 @@ const data: RequestFunc<number> = ({ page, limit }) => {
 
 <style scoped lang="scss">
 .grid-list {
-  width: 100%;
+  margin: 0 20px;
   height: 100%;
 }
 
