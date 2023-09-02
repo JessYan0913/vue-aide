@@ -6,65 +6,45 @@ import useHotKey from '../../hooks/useHotKey';
 
 const message = ref<string>();
 
-const hotKeyFactory = (keys: (string | string[])[]): string => {
-  function capitalize(str: string): string {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  function processItem(item: string | string[]) {
-    if (typeof item === 'string') {
-      return capitalize(item);
-    } else if (Array.isArray(item)) {
-      return item.map((subItem) => capitalize(subItem)).join('/');
-    }
-  }
-
-  if (Array.isArray(keys)) {
-    return keys.map((item) => processItem(item)).join('+');
-  }
-
-  return capitalize(keys);
-};
-
 const copy = useHotKey(
-  'c',
   () => {
     message.value = '复制功能';
   },
   {
+    key: 'c',
     ctrlKey: true,
     directions: '复制',
   }
 );
 
 const paste = useHotKey(
-  'v',
   () => {
     message.value = '粘贴功能';
   },
   {
+    key: 'v',
     ctrlKey: true,
     directions: '粘贴',
   }
 );
 
 const undo = useHotKey(
-  'z',
   () => {
     message.value = '撤销功能';
   },
   {
+    key: 'z',
     ctrlKey: true,
     directions: '撤销',
   }
 );
 
 const redo = useHotKey(
-  'z',
   () => {
     message.value = '重做功能';
   },
   {
+    key: 'z',
     ctrlKey: true,
     shiftKey: true,
     exact: true,
@@ -73,7 +53,6 @@ const redo = useHotKey(
 );
 
 const subscribe = useHotKey(
-  'y',
   () => {
     message.value = 'Y消息';
     return () => {
@@ -81,30 +60,40 @@ const subscribe = useHotKey(
     };
   },
   {
+    key: 'y',
     directions: '按下设置消息，抬起清楚消息',
   }
 );
 
-const hotkeyList = [
+const hotkeyList: Array<{
+  hotkey?: string;
+  label?: string;
+  action?: () => void;
+}> = [
   {
-    hotkey: hotKeyFactory(copy.hotKey),
+    hotkey: copy.hotKey?.join('+'),
     label: copy.directions,
+    action: copy,
   },
   {
-    hotkey: hotKeyFactory(paste.hotKey),
+    hotkey: paste.hotKey?.join('+'),
     label: paste.directions,
+    action: paste,
   },
   {
-    hotkey: hotKeyFactory(undo.hotKey),
+    hotkey: undo.hotKey?.join('+'),
     label: undo.directions,
+    action: undo,
   },
   {
-    hotkey: hotKeyFactory(redo.hotKey),
+    hotkey: redo.hotKey?.join('+'),
     label: redo.directions,
+    action: redo,
   },
   {
-    hotkey: hotKeyFactory(subscribe.hotKey),
+    hotkey: subscribe.hotKey?.join('+'),
     label: subscribe.directions,
+    action: subscribe,
   },
 ];
 </script>
@@ -114,6 +103,9 @@ const hotkeyList = [
     <ElTable stripe :border="true" :data="hotkeyList">
       <ElTableColumn prop="label" label="说明"></ElTableColumn>
       <ElTableColumn prop="hotkey" label="快捷键"></ElTableColumn>
+      <ElTableColumn prop="option" label="操作" v-slot="{ row }">
+        <button @click="row.action">立即执行</button>
+      </ElTableColumn>
     </ElTable>
     <h2>快捷键消息</h2>
     <h1>{{ message }}</h1>
