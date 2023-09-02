@@ -24,6 +24,11 @@ export const routes: RouteRecordRaw[] = [
     name: 'CommandDialog',
     component: () => import('../views/command-dialog/index.vue'),
   },
+  {
+    path: '/hotkey',
+    name: 'HotKey',
+    component: () => import('../views/hot-key/index.vue'),
+  },
 ];
 
 const router = createRouter({
