@@ -4,7 +4,7 @@ import useEventListener from './useEventListener';
 
 export interface HotKeyOptions {
   key: string | string[];
-  target: Ref<EventTarget> | EventTarget;
+  target: Ref<EventTarget | null> | EventTarget | null;
   directions: string;
   shiftKey: boolean;
   ctrlKey: boolean;
@@ -37,6 +37,7 @@ export const useHotKey = (hotKeyFunction: HotKeyFunction, opts?: Partial<HotKeyO
   };
 
   const handleKeydownEvent = (event: KeyboardEvent) => {
+    event.stopPropagation();
     const options = opts || {};
     if (paused || !key) {
       return;
@@ -48,7 +49,7 @@ export const useHotKey = (hotKeyFunction: HotKeyFunction, opts?: Partial<HotKeyO
       if (typeof result !== 'function') {
         return;
       }
-      const targetElement: EventTarget = unref(target);
+      const targetElement: EventTarget = unref(target) ?? window;
       const handleKeyup = (event: Event) => {
         event.preventDefault();
         result();
