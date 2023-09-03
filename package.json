@@ -7,7 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext .js,.vue,.ts,.tsx",
-    "lint:fix": "eslint . --fix --ext .js,.vue,.ts,.tsx"
+    "lint:fix": "eslint . --fix --ext .js,.vue,.ts,.tsx",
+    "github": "gh-pages -d dist -r https://github.com/JessYan0913/vue-aide.git"
   },
   "dependencies": {
     "element-plus": "^2.2.28",
@@ -27,6 +28,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^8.0.0",
     "eslint-plugin-vue": "^9.8.0",
+    "gh-pages": "^6.0.0",
     "prettier": "^2.8.2",
     "sass": "^1.63.3",
     "typescript": "^5.0.2",
