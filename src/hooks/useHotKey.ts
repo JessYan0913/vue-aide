@@ -13,7 +13,7 @@ export interface HotKeyOptions {
 
 export interface HotKeyFunction {
   (...args: any[]): any;
-  hotKey?: (string | string[] | undefined)[];
+  hotKey?: (string | string[])[];
   directions?: string;
   pause?: () => void;
   unpause?: () => void;
@@ -26,12 +26,14 @@ export const useHotKey = (hotKeyFunction: HotKeyFunction, opts?: Partial<HotKeyO
   let paused: boolean = false;
   let key = opts?.key;
 
-  const getHotKey = (): (string | string[] | undefined)[] => {
+  const getHotKey = (): (string | string[])[] => {
     const options = opts || {};
     const keyCombination = [];
     if (options.ctrlKey) keyCombination.push(isMacOS ? 'Cmd' : 'Ctrl');
     if (options.shiftKey) keyCombination.push(isMacOS ? 'Option' : 'Shift');
-    keyCombination.push(key);
+    if (key) {
+      keyCombination.push(key);
+    }
 
     return keyCombination;
   };
